@@ -2,6 +2,14 @@
     "title": "Course de chevaux",
     "blip_start": "Départ de la course",
     "prompt_open_menu": "Ouvrir le menu de course",
+    "ui_page_title": "RSG Track - Course de chevaux",
+
+    "notify_track_setup_instructions": "J = définir le départ / ajouter un point. G = définir l'arrivée.",
+    "notify_start_point_placed": "Point de départ défini. Appuyez sur J pour ajouter des points, ou G pour définir l'arrivée.",
+    "notify_point_added": "Point %s ajouté. Appuyez sur J pour un autre point ou G pour définir l'arrivée.",
+    "notify_need_start_first": "Définissez d'abord le point de départ avec J.",
+    "notify_need_start_and_finish": "Définissez d'abord un point de départ et d'arrivée.",
+    "active_track_pts": "Circuit actif (%s pts)",
 
     "notify_no_winners": "Pas encore de gagnant",
     "notify_loading_track": "Chargement du circuit : %s",
@@ -125,6 +133,10 @@
     "ui_load_hint": "Choisissez un circuit sauvegardé à charger",
     "ui_delete_hint2": "Choisissez un circuit à supprimer",
     "ui_participants_hint": "Cavaliers actuellement en course",
+    "ui_back": "Retour",
+    "ui_status_track_label": "Circuit",
+    "ui_status_laps_label": "Tours",
+    "ui_status_riders_label": "Cavaliers",
 
     "ui_modal_laps": "Nombre de tours",
     "ui_modal_laps_desc": "Choisissez les tours pour ce circuit (1-5)",

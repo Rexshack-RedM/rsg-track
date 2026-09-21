@@ -53,6 +53,12 @@ function normalizeDisplayName(value, fallback = 'Unknown Rider') {
 
 function applyStaticTexts() {
     const set = (sel, txt) => { const el = document.querySelector(sel); if (el) el.textContent = txt; };
+    document.title = T('ui_page_title', 'RSG Track - Horse Race');
+    if (btnBack) btnBack.title = T('ui_back', 'Back');
+    if (btnClose) btnClose.title = T('ui_close', 'Close');
+    set('#statusTrackLabel', T('ui_status_track_label', 'Track'));
+    set('#statusLapsLabel', T('ui_status_laps_label', 'Laps'));
+    set('#statusRidersLabel', T('ui_status_riders_label', 'Riders'));
     set('#modalSetLaps .modal-title', T('ui_modal_laps', 'Set Laps'));
     set('#modalSetLaps .modal-desc', T('ui_modal_laps_desc', 'Choose laps for this circuit (1-5)'));
     set('#modalSetMaxMarkers .modal-title', T('ui_modal_max', 'Max Markers'));
@@ -421,7 +427,7 @@ function showParticipants() {
         players.forEach((player, index) => {
             if (!player || typeof player !== 'object') return;
             const source = player.source ?? player.id ?? (index + 1);
-            const name = normalizeDisplayName(player.name, `Rider #${source}`);
+            const name = normalizeDisplayName(player.name, T('ui_rider_num', 'Rider #%s', source));
             list.push({ name, source });
         });
     } else if (players && typeof players === 'object') {
@@ -432,7 +438,7 @@ function showParticipants() {
                 : key;
             const name = normalizeDisplayName(
                 player && typeof player === 'object' ? player.name ?? player : player,
-                `Rider #${source}`
+                T('ui_rider_num', 'Rider #%s', source)
             );
             list.push({ name, source });
         });
@@ -444,7 +450,7 @@ function showParticipants() {
         list.forEach((player, idx) => {
             participantsList.appendChild(createRow({
                 icon: `${idx + 1}`,
-                title: normalizeDisplayName(player.name, `Rider #${player.source}`),
+                title: normalizeDisplayName(player.name, T('ui_rider_num', 'Rider #%s', player.source)),
                 desc: T('ui_rider_num', 'Rider #%s', idx + 1),
                 badge: T('ui_in_race', 'In Race'),
                 badgeClass: 'on'

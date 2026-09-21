@@ -69,7 +69,7 @@ local function GetHeadingToFacePlayer(coords)
     local pCoords = GetEntityCoords(ped)
     local dx = pCoords.x - coords.x
     local dy = pCoords.y - coords.y
-    local heading = math.deg(math.atan2(dx, dy))
+    local heading = math.deg(math.atan(dx, dy)) -- Lua 5.4 dropped math.atan2; two-arg math.atan replaces it
     if heading < 0 then heading = heading + 360.0 end
     return heading
 end
@@ -208,9 +208,7 @@ local function ShowToast(data)
     SendNUIMessage({ action = 'toast', data = payload })
 end
 
-local function TrackNotify(data)
-    ShowToast(data)
-end
+local TrackNotify = ShowToast -- alias kept for call-site clarity (race notifications vs generic toasts)
 
 RegisterNetEvent('rsg-track:toast', function(data) ShowToast(data) end)
 
@@ -255,11 +253,7 @@ Citizen.CreateThread(function()
                 PromptSetVisible(racePrompt, false)
             end
         else
-            if not raceStarted or not inRace then
-                if not (raceStarted and inRace) then
-                    if not trackCreated then if #particleHandles > 0 then ClearParticles() end end
-                end
-            end
+            if not trackCreated and #particleHandles > 0 then ClearParticles() end
             if not trackCreated or isCreatingTrack or raceStarted then
                 PromptSetEnabled(racePrompt, false)
                 PromptSetVisible(racePrompt, false)
@@ -361,7 +355,7 @@ function CreateRaceTrack()
 
     TrackNotify({
         title = Locale('title'),
-        description = 'J = set start / add point. G = set finish.',
+        description = Locale('notify_track_setup_instructions'),
         type = 'inform',
         duration = 10000
     })
@@ -429,7 +423,7 @@ function CreateRaceTrack()
 
                     lib.notify({
                         title = Locale('title'),
-                        description = 'Start point set. Press J to add points, or G to set the finish.',
+                        description = Locale('notify_start_point_placed'),
                         type = 'success'
                     })
                 elseif #extraPoints >= (MAX_POINTS - 2) then
@@ -462,7 +456,7 @@ function CreateRaceTrack()
 
                     lib.notify({
                         title = Locale('title'),
-                        description = ('Point %d added. Press J for another point or G to set the finish.'):format(#extraPoints + 1),
+                        description = Locale('notify_point_added', #extraPoints + 1),
                         type = 'inform'
                     })
                 end
@@ -474,7 +468,7 @@ function CreateRaceTrack()
                 if not startPoint then
                     lib.notify({
                         title = Locale('title'),
-                        description = 'Set the start point with J first.',
+                        description = Locale('notify_need_start_first'),
                         type = 'error'
                     })
                 else
@@ -492,7 +486,7 @@ function CreateRaceTrack()
                     if #finalPoints < 2 then
                         lib.notify({
                             title = Locale('title'),
-                            description = 'Set a start and finish point first.',
+                            description = Locale('notify_need_start_and_finish'),
                             type = 'error'
                         })
                     else
@@ -536,7 +530,7 @@ AddEventHandler('rsg-track:syncTrack', function(points, created)
                 if match then currentTrackName = t.name break end
             end
         end
-        if not currentTrackName then currentTrackName = "Active Track ("..#racePoints.." pts)" end
+        if not currentTrackName then currentTrackName = Locale('active_track_pts', #racePoints) end
         CreateRaceBlip()
         SetRaceGPS()
         RefreshAllParticles()
@@ -619,15 +613,6 @@ Citizen.CreateThread(function()
                 end
             end
         else
-            if not trackCreated and #particleHandles>0 and not raceStarted then
-                -- idle handled elsewhere
-            end
-            if not raceStarted or not inRace then
-                -- Clear extra handles when not in race handled by idle thread
-                if not trackCreated and not isCreatingTrack then
-                    -- keep
-                end
-            end
             -- Reset checkpoint when not racing
             if not inRace then checkpointIdx = 1 playerLaps=0 end
             if not trackCreated then
@@ -696,10 +681,11 @@ AddEventHandler('onResourceStop', function(resourceName)
         if isNuiOpen then SetNuiFocus(false,false) end
     end
 end)
+-- Block ESC while the NUI menu is open so it can't be used to bypass the
+-- close/cancel NUI callbacks and leave focus stuck on the UI.
 Citizen.CreateThread(function()
     while true do
         Wait(0)
-        if isNuiOpen and IsControlJustPressed(0, 0x1B0000) then end
         if isNuiOpen then DisableControlAction(0, 0x1B0000, true) end
     end
 end)

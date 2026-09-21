@@ -2,6 +2,14 @@
     "title": "Horse Race",
     "blip_start": "Horse Race Start",
     "prompt_open_menu": "Open Race Menu",
+    "ui_page_title": "RSG Track - Horse Race",
+
+    "notify_track_setup_instructions": "J = set start / add point. G = set finish.",
+    "notify_start_point_placed": "Start point set. Press J to add points, or G to set the finish.",
+    "notify_point_added": "Point %s added. Press J for another point or G to set the finish.",
+    "notify_need_start_first": "Set the start point with J first.",
+    "notify_need_start_and_finish": "Set a start and finish point first.",
+    "active_track_pts": "Active Track (%s pts)",
 
     "notify_no_winners": "No winners yet",
     "notify_loading_track": "Loading track: %s",
@@ -125,6 +133,10 @@
     "ui_load_hint": "Select a saved track to load",
     "ui_delete_hint2": "Select a track to delete",
     "ui_participants_hint": "Riders currently in race",
+    "ui_back": "Back",
+    "ui_status_track_label": "Track",
+    "ui_status_laps_label": "Laps",
+    "ui_status_riders_label": "Riders",
 
     "ui_modal_laps": "Set Laps",
     "ui_modal_laps_desc": "Choose laps for this circuit (1-5)",
