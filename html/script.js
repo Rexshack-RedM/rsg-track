@@ -154,7 +154,7 @@ function setView(view) {
 
     if (view === 'main') {
         viewMain.classList.remove('hidden');
-        panelTitle.textContent = T('title', 'HORSE RACE');
+        panelTitle.textContent = T('title', 'Horse Race');
         panelSubtitle.textContent = T('ui_subtitle', 'Rexshack Racing Circuit');
         btnBack.style.visibility = 'hidden';
     } else if (view === 'load') {
