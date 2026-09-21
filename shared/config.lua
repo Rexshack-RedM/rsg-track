@@ -1,1 +1,4 @@
 Config = {}
+
+
+Config.Locale = 'en'
