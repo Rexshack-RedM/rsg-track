@@ -278,7 +278,6 @@ end)
 
 function LoadTracksFromServer() TriggerServerEvent('rsg-track:requestTracks') end
 function OpenRaceMenu() OpenRaceMenuNUI() end
-RegisterCommand('racerace', function() OpenRaceMenuNUI() end, false)
 RegisterCommand('race', function() OpenRaceMenuNUI() end, false)
 
 -- NUI Callbacks
